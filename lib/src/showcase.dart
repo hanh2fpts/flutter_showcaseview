@@ -452,12 +452,11 @@ class _ShowcaseState extends State<Showcase> {
           children: [
             if (_showShowCase)
               Positioned.fill(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                top: 0,
+                top: widget.targetPadding.top,
+                bottom: widget.targetPadding.bottom,
+                left: widget.targetPadding.left,
+                right: widget.targetPadding.right,
                 child: Container(
-                  margin: widget.targetPadding,
                   decoration: BoxDecoration(
                     //color: const Color(0xFFFAFAFA),
                     color: Colors.green,
@@ -465,7 +464,10 @@ class _ShowcaseState extends State<Showcase> {
                   ),
                 ),
               ),
-            widget.child,
+            Padding(
+              padding: widget.targetPadding,
+              child: widget.child,
+            ),
           ],
         ),
       );
