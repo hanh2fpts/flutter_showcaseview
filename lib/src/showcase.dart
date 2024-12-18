@@ -389,7 +389,8 @@ class Showcase extends StatefulWidget {
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
     this.disableMovingAnimation,
     this.disableScaleAnimation,
-    this.tooltipPadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+    this.tooltipPadding =
+        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
     this.onToolTipClick,
     this.targetPadding = EdgeInsets.zero,
     this.blurValue,
@@ -417,9 +418,12 @@ class Showcase extends StatefulWidget {
   })  : height = null,
         width = null,
         container = null,
-        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0, "overlay opacity must be between 0 and 1."),
-        assert(onTargetClick == null || disposeOnTap != null, "disposeOnTap is required if you're using onTargetClick"),
-        assert(disposeOnTap == null || onTargetClick != null, "onTargetClick is required if you're using disposeOnTap"),
+        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
+            "overlay opacity must be between 0 and 1."),
+        assert(onTargetClick == null || disposeOnTap != null,
+            "disposeOnTap is required if you're using onTargetClick"),
+        assert(disposeOnTap == null || onTargetClick != null,
+            "onTargetClick is required if you're using disposeOnTap"),
         assert(onBarrierClick == null || disableBarrierInteraction == false,
             "can't use onBarrierClick & disableBarrierInteraction property at same time");
 
@@ -488,7 +492,8 @@ class Showcase extends StatefulWidget {
     this.overlayColor = Colors.black45,
     this.targetBorderRadius,
     this.overlayOpacity = 0.75,
-    this.scrollLoadingWidget = const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white)),
+    this.scrollLoadingWidget = const CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation(Colors.white)),
     this.onTargetClick,
     this.disposeOnTap,
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
@@ -529,7 +534,8 @@ class Showcase extends StatefulWidget {
         titleTextDirection = null,
         descriptionTextDirection = null,
         toolTipMargin = 14,
-        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0, "overlay opacity must be between 0 and 1."),
+        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
+            "overlay opacity must be between 0 and 1."),
         assert(onBarrierClick == null || disableBarrierInteraction == false,
             "can't use onBarrierClick & disableBarrierInteraction property at same time");
 
@@ -588,7 +594,9 @@ class _ShowcaseState extends State<Showcase> {
       }
 
       if (showCaseWidgetState.autoPlay) {
-        timer = Timer(Duration(seconds: showCaseWidgetState.autoPlayDelay.inSeconds), _nextIfAny);
+        timer = Timer(
+            Duration(seconds: showCaseWidgetState.autoPlayDelay.inSeconds),
+            _nextIfAny);
       }
     }
   }
@@ -623,19 +631,7 @@ class _ShowcaseState extends State<Showcase> {
           return buildOverlayOnTarget(offset, rectBound.size, rectBound, size);
         },
         showOverlay: true,
-        child: Stack(
-          children: [
-            if (_showShowCase)
-              Positioned.fill(
-                  child: Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFAFAFA),
-                  borderRadius: BorderRadius.circular(100),
-                ),
-              )),
-            widget.child,
-          ],
-        ),
+        child: widget.child,
       );
     }
     return widget.child;
@@ -652,9 +648,12 @@ class _ShowcaseState extends State<Showcase> {
   void recalculateRootWidgetSize() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      final rootWidget = context.findRootAncestorStateOfType<State<WidgetsApp>>();
+      final rootWidget =
+          context.findRootAncestorStateOfType<State<WidgetsApp>>();
       rootRenderObject = rootWidget?.context.findRenderObject() as RenderBox?;
-      rootWidgetSize = rootWidget == null ? MediaQuery.of(context).size : rootRenderObject?.size;
+      rootWidgetSize = rootWidget == null
+          ? MediaQuery.of(context).size
+          : rootRenderObject?.size;
     });
   }
 
@@ -723,7 +722,8 @@ class _ShowcaseState extends State<Showcase> {
       children: [
         GestureDetector(
           onTap: () {
-            if (!showCaseWidgetState.disableBarrierInteraction && !widget.disableBarrierInteraction) {
+            if (!showCaseWidgetState.disableBarrierInteraction &&
+                !widget.disableBarrierInteraction) {
               _nextIfAny();
             }
             widget.onBarrierClick?.call();
@@ -732,8 +732,11 @@ class _ShowcaseState extends State<Showcase> {
             clipper: RRectClipper(
               area: _isScrollRunning ? Rect.zero : rectBound,
               isCircle: widget.targetShapeBorder is CircleBorder,
-              radius: _isScrollRunning ? BorderRadius.zero : widget.targetBorderRadius,
-              overlayPadding: _isScrollRunning ? EdgeInsets.zero : widget.targetPadding,
+              radius: _isScrollRunning
+                  ? BorderRadius.zero
+                  : widget.targetBorderRadius,
+              overlayPadding:
+                  _isScrollRunning ? EdgeInsets.zero : widget.targetPadding,
             ),
             child: blur != 0
                 ? BackdropFilter(
@@ -742,7 +745,8 @@ class _ShowcaseState extends State<Showcase> {
                       width: mediaQuerySize.width,
                       height: mediaQuerySize.height,
                       decoration: BoxDecoration(
-                        color: widget.overlayColor.withOpacity(widget.overlayOpacity),
+                        color: widget.overlayColor
+                            .withOpacity(widget.overlayOpacity),
                       ),
                     ),
                   )
@@ -750,7 +754,8 @@ class _ShowcaseState extends State<Showcase> {
                     width: mediaQuerySize.width,
                     height: mediaQuerySize.height,
                     decoration: BoxDecoration(
-                      color: widget.overlayColor.withOpacity(widget.overlayOpacity),
+                      color: widget.overlayColor
+                          .withOpacity(widget.overlayOpacity),
                     ),
                   ),
           ),
@@ -788,8 +793,10 @@ class _ShowcaseState extends State<Showcase> {
             contentWidth: widget.width,
             onTooltipTap: _getOnTooltipTap,
             tooltipPadding: widget.tooltipPadding,
-            disableMovingAnimation: widget.disableMovingAnimation ?? showCaseWidgetState.disableMovingAnimation,
-            disableScaleAnimation: widget.disableScaleAnimation ?? showCaseWidgetState.disableScaleAnimation,
+            disableMovingAnimation: widget.disableMovingAnimation ??
+                showCaseWidgetState.disableMovingAnimation,
+            disableScaleAnimation: widget.disableScaleAnimation ??
+                showCaseWidgetState.disableScaleAnimation,
             movingAnimationDuration: widget.movingAnimationDuration,
             tooltipBorderRadius: widget.tooltipBorderRadius,
             scaleAnimationDuration: widget.scaleAnimationDuration,
@@ -829,7 +836,9 @@ class _ShowcaseState extends State<Showcase> {
       actionWidgets.add(
         Padding(
           padding: EdgeInsetsDirectional.only(
-            end: action != actionData.last ? _getTooltipActionConfig().actionGap : 0,
+            end: action != actionData.last
+                ? _getTooltipActionConfig().actionGap
+                : 0,
           ),
           child: TooltipActionButtonWidget(
             config: action,
@@ -845,7 +854,9 @@ class _ShowcaseState extends State<Showcase> {
   }
 
   TooltipActionConfig _getTooltipActionConfig() {
-    return widget.tooltipActionConfig ?? showCaseWidgetState.globalTooltipActionConfig ?? const TooltipActionConfig();
+    return widget.tooltipActionConfig ??
+        showCaseWidgetState.globalTooltipActionConfig ??
+        const TooltipActionConfig();
   }
 }
 
@@ -896,7 +907,9 @@ class _TargetWidget extends StatelessWidget {
         width: size.width,
         margin: targetPadding,
         decoration: ShapeDecoration(
-          shape: radius != null ? RoundedRectangleBorder(borderRadius: radius!) : shapeBorder,
+          shape: radius != null
+              ? RoundedRectangleBorder(borderRadius: radius!)
+              : shapeBorder,
         ),
       ),
     );
