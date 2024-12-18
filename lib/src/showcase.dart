@@ -392,7 +392,7 @@ class _ShowcaseState extends State<Showcase> {
       position ??= GetPosition(
         rootRenderObject: rootRenderObject,
         key: widget.key,
-        padding: EdgeInsets.zero,//widget.targetPadding,
+        padding: EdgeInsets.zero, //widget.targetPadding,
         screenWidth: rootWidgetSize?.width ?? size.width,
         screenHeight: rootWidgetSize?.height ?? size.height,
       );
@@ -451,8 +451,7 @@ class _ShowcaseState extends State<Showcase> {
         child: Container(
           padding: widget.targetPadding,
           decoration: BoxDecoration(
-            //color: const Color(0xFFFAFAFA),
-            color: Colors.green,
+            color: _enableShowcase ? const Color(0xFFFAFAFA) : Colors.transparent,
             borderRadius: widget.targetBorderRadius,
           ),
           child: widget.child,
