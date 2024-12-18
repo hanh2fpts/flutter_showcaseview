@@ -452,15 +452,21 @@ class _ShowcaseState extends State<Showcase> {
           children: [
             if (_showShowCase)
               Positioned.fill(
-                  child: Container(
-                padding: widget.targetPadding,
-                margin: widget.targetPadding,
-                decoration: BoxDecoration(
-                  //color: const Color(0xFFFAFAFA),
-                  color: Colors.green,
-                  borderRadius: widget.targetBorderRadius,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                top: 0,
+                child: Container(
+                  height: 39,
+                  width: 39,
+                  padding: widget.targetPadding,
+                  decoration: BoxDecoration(
+                    //color: const Color(0xFFFAFAFA),
+                    color: Colors.green,
+                    borderRadius: widget.targetBorderRadius,
+                  ),
                 ),
-              )),
+              ),
             widget.child,
           ],
         ),
