@@ -623,12 +623,19 @@ class _ShowcaseState extends State<Showcase> {
           return buildOverlayOnTarget(offset, rectBound.size, rectBound, size);
         },
         showOverlay: true,
-        child: Container(
-            decoration: BoxDecoration(
-              color: Colors.yellow,
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: widget.child),
+        child: Stack(
+          children: [
+            if (_showShowCase)
+              Positioned.fill(
+                  child: Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFAFAFA),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              )),
+            widget.child,
+          ],
+        ),
       );
     }
     return widget.child;
@@ -889,7 +896,6 @@ class _TargetWidget extends StatelessWidget {
         width: size.width,
         margin: targetPadding,
         decoration: ShapeDecoration(
-          color: Colors.red,
           shape: radius != null ? RoundedRectangleBorder(borderRadius: radius!) : shapeBorder,
         ),
       ),
