@@ -453,10 +453,10 @@ class _ShowcaseState extends State<Showcase> {
             if (_showShowCase)
               Positioned.fill(
                   child: Container(
-                padding: EdgeInsets.all(8),
+                padding: widget.targetPadding,
                 decoration: BoxDecoration(
                   color: const Color(0xFFFAFAFA),
-                  borderRadius: BorderRadius.circular(100),
+                  borderRadius: widget.targetBorderRadius,
                 ),
               )),
             widget.child,
