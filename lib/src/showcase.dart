@@ -745,7 +745,8 @@ class _ShowcaseState extends State<Showcase> {
                       width: mediaQuerySize.width,
                       height: mediaQuerySize.height,
                       decoration: BoxDecoration(
-                        color: Color(0xFFFAFAFA),
+                        color: widget.overlayColor
+                            .withOpacity(widget.overlayOpacity),
                       ),
                     ),
                   )
@@ -906,6 +907,7 @@ class _TargetWidget extends StatelessWidget {
         width: size.width,
         margin: targetPadding,
         decoration: ShapeDecoration(
+          color: Colors.green,
           shape: radius != null
               ? RoundedRectangleBorder(borderRadius: radius!)
               : shapeBorder,
