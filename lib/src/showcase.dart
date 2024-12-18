@@ -450,22 +450,13 @@ class _ShowcaseState extends State<Showcase> {
         showOverlay: true,
         child: Stack(
           children: [
-            if (_showShowCase)
-              Positioned.fill(
-                top: widget.targetPadding.top,
-                bottom: widget.targetPadding.bottom,
-                left: widget.targetPadding.left,
-                right: widget.targetPadding.right,
-                child: Container(
-                  decoration: BoxDecoration(
-                    //color: const Color(0xFFFAFAFA),
-                    color: Colors.green,
-                    borderRadius: widget.targetBorderRadius,
-                  ),
-                ),
-              ),
-            Padding(
+            Container(
               padding: widget.targetPadding,
+              decoration: BoxDecoration(
+                //color: const Color(0xFFFAFAFA),
+                color: Colors.green,
+                borderRadius: widget.targetBorderRadius,
+              ),
               child: widget.child,
             ),
           ],
