@@ -451,7 +451,7 @@ class _ShowcaseState extends State<Showcase> {
         child: Container(
           padding: widget.targetPadding,
           decoration: BoxDecoration(
-            color: _enableShowcase ? const Color(0xFFFAFAFA) : Colors.transparent,
+            color: _showShowCase ? const Color(0xFFFAFAFA) : Colors.transparent,
             borderRadius: widget.targetBorderRadius,
           ),
           child: widget.child,
