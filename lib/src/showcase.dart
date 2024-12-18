@@ -392,7 +392,7 @@ class _ShowcaseState extends State<Showcase> {
       position ??= GetPosition(
         rootRenderObject: rootRenderObject,
         key: widget.key,
-        padding: widget.targetPadding,
+        padding: EdgeInsets.zero,//widget.targetPadding,
         screenWidth: rootWidgetSize?.width ?? size.width,
         screenHeight: rootWidgetSize?.height ?? size.height,
       );
@@ -441,25 +441,21 @@ class _ShowcaseState extends State<Showcase> {
           position = GetPosition(
             rootRenderObject: rootRenderObject,
             key: widget.key,
-            padding: widget.targetPadding,
+            //padding: widget.targetPadding,
             screenWidth: size.width,
             screenHeight: size.height,
           );
           return buildOverlayOnTarget(offset, rectBound.size, rectBound, size);
         },
         showOverlay: true,
-        child: Stack(
-          children: [
-            Container(
-              padding: widget.targetPadding,
-              decoration: BoxDecoration(
-                //color: const Color(0xFFFAFAFA),
-                color: Colors.green,
-                borderRadius: widget.targetBorderRadius,
-              ),
-              child: widget.child,
-            ),
-          ],
+        child: Container(
+          padding: widget.targetPadding,
+          decoration: BoxDecoration(
+            //color: const Color(0xFFFAFAFA),
+            color: Colors.green,
+            borderRadius: widget.targetBorderRadius,
+          ),
+          child: widget.child,
         ),
       );
     }
@@ -558,7 +554,7 @@ class _ShowcaseState extends State<Showcase> {
               area: _isScrollRunning ? Rect.zero : rectBound,
               isCircle: widget.targetShapeBorder is CircleBorder,
               radius: _isScrollRunning ? BorderRadius.zero : widget.targetBorderRadius,
-              overlayPadding: _isScrollRunning ? EdgeInsets.zero : widget.targetPadding,
+              overlayPadding: _isScrollRunning ? EdgeInsets.zero : EdgeInsets.zero,
             ),
             child: blur != 0
                 ? BackdropFilter(
@@ -591,7 +587,7 @@ class _ShowcaseState extends State<Showcase> {
             onLongPress: widget.onTargetLongPress,
             shapeBorder: widget.targetShapeBorder,
             disableDefaultChildGestures: widget.disableDefaultTargetGestures,
-            targetPadding: widget.targetPadding,
+            targetPadding: EdgeInsets.zero,
           ),
           ToolTipWidget(
             position: position,
