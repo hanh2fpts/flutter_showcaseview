@@ -907,6 +907,7 @@ class _TargetWidget extends StatelessWidget {
         width: size.width,
         margin: targetPadding,
         decoration: ShapeDecoration(
+          color: Color(0xFFFAFAFA),
           shape: radius != null
               ? RoundedRectangleBorder(borderRadius: radius!)
               : shapeBorder,
