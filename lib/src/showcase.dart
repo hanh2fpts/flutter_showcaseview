@@ -29,11 +29,8 @@ import 'package:flutter/material.dart';
 import 'enum.dart';
 import 'get_position.dart';
 import 'layout_overlays.dart';
-import 'models/tooltip_action_button.dart';
-import 'models/tooltip_action_config.dart';
 import 'shape_clipper.dart';
 import 'showcase_widget.dart';
-import 'tooltip_action_button_widget.dart';
 import 'tooltip_widget.dart';
 
 class Showcase extends StatefulWidget {
@@ -50,6 +47,11 @@ class Showcase extends StatefulWidget {
 
   /// Represents subject line of target widget
   final String? title;
+
+  /// Title alignment with in tooltip widget
+  ///
+  /// Defaults to [TextAlign.start]
+  final TextAlign titleAlignment;
 
   /// Represents summary description of target widget
   final String? description;
@@ -172,6 +174,11 @@ class Showcase extends StatefulWidget {
   /// Default to [BorderRadius.circular(8)]
   final BorderRadius? tooltipBorderRadius;
 
+  /// Description alignment with in tooltip widget
+  ///
+  /// Defaults to [TextAlign.start]
+  final TextAlign descriptionAlignment;
+
   /// if `disableDefaultTargetGestures` parameter is true
   /// onTargetClick, onTargetDoubleTap, onTargetLongPress and
   /// disposeOnTap parameter will not work
@@ -245,132 +252,13 @@ class Showcase extends StatefulWidget {
   /// Defaults to 7.
   final double toolTipSlideEndDistance;
 
-  /// Title widget alignment within tooltip widget
-  ///
-  /// Defaults to [Alignment.center]
-  final AlignmentGeometry titleAlignment;
-
-  /// Title text alignment with in tooltip widget
-  ///
-  /// Defaults to [TextAlign.start]
-  /// To understand how text is aligned, check [TextAlign]
-  final TextAlign titleTextAlign;
-
-  /// Description widget alignment within tooltip widget
-  ///
-  /// Defaults to [Alignment.center]
-  final AlignmentGeometry descriptionAlignment;
-
-  /// Description text alignment with in tooltip widget
-  ///
-  /// Defaults to [TextAlign.start]
-  /// To understand how text is aligned, check [TextAlign]
-  final TextAlign descriptionTextAlign;
-
-  /// Defines the margin for the tooltip.
-  /// Which is from 0 to [toolTipSlideEndDistance].
-  ///
-  /// Defaults to 14.
-  final double toolTipMargin;
-
-  /// Provides toolTip action widgets at bottom in tooltip.
-  ///
-  /// one can use [TooltipActionButton] class to use default action
-  final List<TooltipActionButton>? tooltipActions;
-
-  /// Provide a configuration for tooltip action widget like alignment,
-  /// position, gap, etc...
-  ///
-  /// Default to [const TooltipActionConfig()]
-  final TooltipActionConfig? tooltipActionConfig;
-
-  /// Defines the alignment for the auto scroll function.
-  ///
-  /// Defaults to 0.5.
-  final double scrollAlignment;
-
-  /// While target widget is out viewport then
-  /// whether enabling auto scroll so as to make the target widget visible.
-  /// This is used to override the [ShowCaseWidget.enableAutoScroll] behaviour
-  /// for this showcase.
-  final bool? enableAutoScroll;
-
-  /// Highlights a specific widget on the screen with an informative tooltip.
-  ///
-  /// This widget helps you showcase specific parts of your UI by drawing an
-  /// overlay around it and displaying a description. You can customize the
-  /// appearance and behavior of the showcase and tooltip for a seamless user
-  /// experience.
-  ///
-  /// **Required arguments:**
-  ///
-  /// - `key`: A unique key for this Showcase widget.
-  /// - `description`: A description of the widget being showcased.
-  /// - `child`: The widget you want to highlight.
-  ///
-  /// **Optional arguments:**
-  ///
-  /// **Tooltip:**
-  ///   - `title`: An optional title for the tooltip.
-  ///   - `titleAlignment`: Alignment of the title text within the tooltip (defaults to start).
-  ///   - `descriptionAlignment`: Alignment of the description text within the tooltip (defaults to start).
-  ///   - `titleTextStyle`: Style properties for the title text.
-  ///   - `descTextStyle`: Style properties for the description text.
-  ///   - `tooltipBackgroundColor`: Background color of the tooltip (defaults to white).
-  ///   - `textColor`: Color of the text in the tooltip (defaults to black).
-  ///   - `tooltipPadding`: Padding around the content inside the tooltip.
-  ///   - `onToolTipClick`: A callback function called when the user clicks the tooltip.
-  ///   - `tooltipBorderRadius`: The border radius of the tooltip (defaults to 8dp).
-  ///
-  /// **Highlight:**
-  ///   - `targetShapeBorder`: The border to draw around the showcased widget (defaults to a rounded rectangle).
-  ///   - `targetPadding`: Padding around the showcased widget (defaults to none).
-  ///   - `showArrow`: Whether to show an arrow pointing to the showcased widget (defaults to true).
-  ///
-  /// **Animations:**
-  ///   - `movingAnimationDuration`: Duration of the animation when moving the tooltip (defaults to 2 seconds).
-  ///   - `disableMovingAnimation`: Disables the animation when moving the tooltip.
-  ///   - `disableScaleAnimation`: Disables the animation when scaling the tooltip.
-  ///   - `scaleAnimationDuration`: Duration of the animation when scaling the tooltip (defaults to 300 milliseconds).
-  ///   - `scaleAnimationCurve`: The curve used for the scaling animation (defaults to ease-in).
-  ///   - `scaleAnimationAlignment`: The alignment point for the scaling animation.
-  ///
-  /// **Interactions:**
-  ///   - `onTargetClick`: A callback function called when the user clicks the showcased widget.
-  ///   - `disposeOnTap`: Whether to dispose of the showcase after a tap on the showcased widget (requires `onTargetClick`).
-  ///   - `onTargetLongPress`: A callback function called when the user long-presses the showcased widget.
-  ///   - `onTargetDoubleTap`: A callback function called when the user double-taps the showcased widget.
-  ///   - `disableDefaultTargetGestures`: Disables default gestures on the target widget (panning, zooming).
-  ///   - `onBarrierClick`: A callback function called when the user clicks outside the showcase overlay.
-  ///   - `disableBarrierInteraction`: Disables user interaction with the area outside the showcase overlay.
-  ///
-  /// **Advanced:**
-  ///   - `container`: A custom widget to use as the tooltip instead of the default one.
-  ///   - `overlayColor`: Color of the showcase overlay (defaults to black with 75% opacity).
-  ///   - `overlayOpacity`: Opacity of the showcase overlay (0.0 to 1.0).
-  ///   - `scrollLoadingWidget`: A widget to display while content is loading (for infinite scrolling scenarios).
-  ///   - `blurValue`: The amount of background blur applied during the showcase.
-  ///   - `tooltipPosition`: The position of the tooltip relative to the showcased widget.
-  ///   - `toolTipSlideEndDistance`: The distance the tooltip slides in from the edge of the screen (defaults to 7dp).
-  ///   - `toolTipMargin`: The margin around the tooltip (defaults to 14dp).
-  ///   - `tooltipActions`: A list of custom actions (widgets) to display within the tooltip.
-  ///   - `tooltipActionConfig`: Configuration options for custom tooltip actions.
-  ///   - `scrollAlignment`: Defines the alignment for the auto scroll function.
-  ///   - `enableAutoScroll`:This is used to override the [ShowCaseWidget.enableAutoScroll] behaviour for this showcase.
-  ///
-  /// **Assertions:**
-  ///
-  /// - `overlayOpacity` must be between 0.0 and 1.0.
-  /// - `onTargetClick` and `disposeOnTap` must be used together (one cannot exist without the other).
   const Showcase({
     required this.key,
     required this.description,
     required this.child,
     this.title,
-    this.titleTextAlign = TextAlign.start,
-    this.descriptionTextAlign = TextAlign.start,
-    this.titleAlignment = Alignment.center,
-    this.descriptionAlignment = Alignment.center,
+    this.titleAlignment = TextAlign.start,
+    this.descriptionAlignment = TextAlign.start,
     this.targetShapeBorder = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
     ),
@@ -389,8 +277,7 @@ class Showcase extends StatefulWidget {
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
     this.disableMovingAnimation,
     this.disableScaleAnimation,
-    this.tooltipPadding =
-        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+    this.tooltipPadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
     this.onToolTipClick,
     this.targetPadding = EdgeInsets.zero,
     this.blurValue,
@@ -410,74 +297,15 @@ class Showcase extends StatefulWidget {
     this.onBarrierClick,
     this.disableBarrierInteraction = false,
     this.toolTipSlideEndDistance = 7,
-    this.toolTipMargin = 14,
-    this.tooltipActions,
-    this.tooltipActionConfig,
-    this.scrollAlignment = 0.5,
-    this.enableAutoScroll,
   })  : height = null,
         width = null,
         container = null,
-        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
-            "overlay opacity must be between 0 and 1."),
-        assert(onTargetClick == null || disposeOnTap != null,
-            "disposeOnTap is required if you're using onTargetClick"),
-        assert(disposeOnTap == null || onTargetClick != null,
-            "onTargetClick is required if you're using disposeOnTap"),
+        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0, "overlay opacity must be between 0 and 1."),
+        assert(onTargetClick == null || disposeOnTap != null, "disposeOnTap is required if you're using onTargetClick"),
+        assert(disposeOnTap == null || onTargetClick != null, "onTargetClick is required if you're using disposeOnTap"),
         assert(onBarrierClick == null || disableBarrierInteraction == false,
             "can't use onBarrierClick & disableBarrierInteraction property at same time");
 
-  /// Creates a Showcase widget with a custom tooltip widget.
-  ///
-  /// This constructor allows you to provide a completely custom widget
-  /// for the tooltip instead of using the default one with title and
-  /// description.  This gives you more flexibility in designing the
-  /// appearance and behavior of the tooltip.
-  ///
-  /// **Required arguments:**
-  ///
-  /// - `key`: A unique key for this Showcase widget.
-  /// - `height`: The height of the custom tooltip widget.
-  /// - `width`: The width of the custom tooltip widget.
-  /// - `container`: The custom widget to use as the tooltip.
-  /// - `child`: The widget you want to highlight.
-  ///
-  /// **Optional arguments:**
-  ///
-  /// **Highlight:**
-  /// - `targetShapeBorder`: The border to draw around the showcased widget (defaults to a rounded rectangle).
-  /// - `targetBorderRadius`: The border radius of the showcased widget.
-  /// - `overlayColor`: Color of the showcase overlay (defaults to black with 75% opacity).
-  /// - `overlayOpacity`: Opacity of the showcase overlay (0.0 to 1.0).
-  /// - `scrollLoadingWidget`: A widget to display while content is loading (for infinite scrolling scenarios).
-  /// - `onTargetClick`: A callback function called when the user clicks the showcased widget.
-  /// - `disposeOnTap`: Whether to dispose of the showcase after a tap on the showcased widget (requires `onTargetClick`).
-  /// - `movingAnimationDuration`: Duration of the animation when moving the tooltip (defaults to 2 seconds).
-  /// - `disableMovingAnimation`: Disables the animation when moving the tooltip.
-  /// - `targetPadding`: Padding around the showcased widget (defaults to none).
-  /// - `blurValue`: The amount of background blur applied during the showcase.
-  /// - `onTargetLongPress`: A callback function called when the user long-presses the showcased widget.
-  /// - `onTargetDoubleTap`: A callback function called when the user double-taps the showcased widget.
-  /// - `disableDefaultTargetGestures`: Disables default gestures on the target widget (panning, zooming).
-  /// - `tooltipPosition`: The position of the tooltip relative to the showcased widget.
-  /// - `onBarrierClick`: A callback function called when the user clicks outside the showcase overlay.
-  /// - `disableBarrierInteraction`: Disables user interaction with the area outside the showcase overlay.
-  ///
-  /// **Advanced:**
-  /// - `toolTipSlideEndDistance`: The distance the tooltip slides in from the edge of the screen (defaults to 7dp).
-  /// - `tooltipActions`: A list of custom actions (widgets) to display within the tooltip.
-  /// - `tooltipActionConfig`: Configuration options for custom tooltip actions.
-  ///
-  /// **Differences from default constructor:**
-  ///
-  /// - This constructor doesn't require `title` or `description` arguments.
-  /// - By default, the tooltip won't have an arrow pointing to the target widget (`showArrow` is set to `false`).
-  /// - Default click behavior is disabled (`onToolTipClick` is set to `null`).
-  /// - Default animation settings are slightly different (e.g., `scaleAnimationCurve` is `Curves.decelerate`).
-  ///
-  /// **Assertions:**
-  ///   - `overlayOpacity` must be between 0.0 and 1.0.
-  ///   - `onBarrierClick` cannot be used with `disableBarrierInteraction`.
   const Showcase.withWidget({
     required this.key,
     required this.height,
@@ -492,8 +320,7 @@ class Showcase extends StatefulWidget {
     this.overlayColor = Colors.black45,
     this.targetBorderRadius,
     this.overlayOpacity = 0.75,
-    this.scrollLoadingWidget = const CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation(Colors.white)),
+    this.scrollLoadingWidget = const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white)),
     this.onTargetClick,
     this.disposeOnTap,
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
@@ -507,10 +334,6 @@ class Showcase extends StatefulWidget {
     this.onBarrierClick,
     this.disableBarrierInteraction = false,
     this.toolTipSlideEndDistance = 7,
-    this.tooltipActions,
-    this.tooltipActionConfig,
-    this.scrollAlignment = 0.5,
-    this.enableAutoScroll,
   })  : showArrow = false,
         onToolTipClick = null,
         scaleAnimationDuration = const Duration(milliseconds: 300),
@@ -519,10 +342,8 @@ class Showcase extends StatefulWidget {
         disableScaleAnimation = null,
         title = null,
         description = null,
-        titleTextAlign = TextAlign.start,
-        descriptionTextAlign = TextAlign.start,
-        titleAlignment = Alignment.center,
-        descriptionAlignment = Alignment.center,
+        titleAlignment = TextAlign.start,
+        descriptionAlignment = TextAlign.start,
         titleTextStyle = null,
         descTextStyle = null,
         tooltipBackgroundColor = Colors.white,
@@ -533,9 +354,7 @@ class Showcase extends StatefulWidget {
         descriptionPadding = null,
         titleTextDirection = null,
         descriptionTextDirection = null,
-        toolTipMargin = 14,
-        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
-            "overlay opacity must be between 0 and 1."),
+        assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0, "overlay opacity must be between 0 and 1."),
         assert(onBarrierClick == null || disableBarrierInteraction == false,
             "can't use onBarrierClick & disableBarrierInteraction property at same time");
 
@@ -589,14 +408,12 @@ class _ShowcaseState extends State<Showcase> {
     });
 
     if (activeStep == widget.key) {
-      if (widget.enableAutoScroll ?? showCaseWidgetState.enableAutoScroll) {
+      if (showCaseWidgetState.enableAutoScroll) {
         _scrollIntoView();
       }
 
       if (showCaseWidgetState.autoPlay) {
-        timer = Timer(
-            Duration(seconds: showCaseWidgetState.autoPlayDelay.inSeconds),
-            _nextIfAny);
+        timer = Timer(Duration(seconds: showCaseWidgetState.autoPlayDelay.inSeconds), _nextIfAny);
       }
     }
   }
@@ -607,7 +424,7 @@ class _ShowcaseState extends State<Showcase> {
       await Scrollable.ensureVisible(
         widget.key.currentContext!,
         duration: showCaseWidgetState.widget.scrollDuration,
-        alignment: widget.scrollAlignment,
+        alignment: 0.5,
       );
       setState(() => _isScrollRunning = false);
     });
@@ -631,7 +448,20 @@ class _ShowcaseState extends State<Showcase> {
           return buildOverlayOnTarget(offset, rectBound.size, rectBound, size);
         },
         showOverlay: true,
-        child: widget.child,
+        child: Stack(
+          children: [
+            if (_showShowCase)
+              Positioned.fill(
+                  child: Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFAFAFA),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              )),
+            widget.child,
+          ],
+        ),
       );
     }
     return widget.child;
@@ -648,12 +478,9 @@ class _ShowcaseState extends State<Showcase> {
   void recalculateRootWidgetSize() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      final rootWidget =
-          context.findRootAncestorStateOfType<State<WidgetsApp>>();
+      final rootWidget = context.findRootAncestorStateOfType<State<WidgetsApp>>();
       rootRenderObject = rootWidget?.context.findRenderObject() as RenderBox?;
-      rootWidgetSize = rootWidget == null
-          ? MediaQuery.of(context).size
-          : rootRenderObject?.size;
+      rootWidgetSize = rootWidget == null ? MediaQuery.of(context).size : rootRenderObject?.size;
     });
   }
 
@@ -722,8 +549,7 @@ class _ShowcaseState extends State<Showcase> {
       children: [
         GestureDetector(
           onTap: () {
-            if (!showCaseWidgetState.disableBarrierInteraction &&
-                !widget.disableBarrierInteraction) {
+            if (!showCaseWidgetState.disableBarrierInteraction && !widget.disableBarrierInteraction) {
               _nextIfAny();
             }
             widget.onBarrierClick?.call();
@@ -732,11 +558,8 @@ class _ShowcaseState extends State<Showcase> {
             clipper: RRectClipper(
               area: _isScrollRunning ? Rect.zero : rectBound,
               isCircle: widget.targetShapeBorder is CircleBorder,
-              radius: _isScrollRunning
-                  ? BorderRadius.zero
-                  : widget.targetBorderRadius,
-              overlayPadding:
-                  _isScrollRunning ? EdgeInsets.zero : widget.targetPadding,
+              radius: _isScrollRunning ? BorderRadius.zero : widget.targetBorderRadius,
+              overlayPadding: _isScrollRunning ? EdgeInsets.zero : widget.targetPadding,
             ),
             child: blur != 0
                 ? BackdropFilter(
@@ -745,8 +568,7 @@ class _ShowcaseState extends State<Showcase> {
                       width: mediaQuerySize.width,
                       height: mediaQuerySize.height,
                       decoration: BoxDecoration(
-                        color: widget.overlayColor
-                            .withOpacity(widget.overlayOpacity),
+                        color: widget.overlayColor.withOpacity(widget.overlayOpacity),
                       ),
                     ),
                   )
@@ -754,8 +576,7 @@ class _ShowcaseState extends State<Showcase> {
                     width: mediaQuerySize.width,
                     height: mediaQuerySize.height,
                     decoration: BoxDecoration(
-                      color: widget.overlayColor
-                          .withOpacity(widget.overlayOpacity),
+                      color: widget.overlayColor.withOpacity(widget.overlayOpacity),
                     ),
                   ),
           ),
@@ -778,10 +599,8 @@ class _ShowcaseState extends State<Showcase> {
             offset: offset,
             screenSize: screenSize,
             title: widget.title,
-            titleTextAlign: widget.titleTextAlign,
-            description: widget.description,
-            descriptionTextAlign: widget.descriptionTextAlign,
             titleAlignment: widget.titleAlignment,
+            description: widget.description,
             descriptionAlignment: widget.descriptionAlignment,
             titleTextStyle: widget.titleTextStyle,
             descTextStyle: widget.descTextStyle,
@@ -793,10 +612,8 @@ class _ShowcaseState extends State<Showcase> {
             contentWidth: widget.width,
             onTooltipTap: _getOnTooltipTap,
             tooltipPadding: widget.tooltipPadding,
-            disableMovingAnimation: widget.disableMovingAnimation ??
-                showCaseWidgetState.disableMovingAnimation,
-            disableScaleAnimation: widget.disableScaleAnimation ??
-                showCaseWidgetState.disableScaleAnimation,
+            disableMovingAnimation: widget.disableMovingAnimation ?? showCaseWidgetState.disableMovingAnimation,
+            disableScaleAnimation: widget.disableScaleAnimation ?? showCaseWidgetState.disableScaleAnimation,
             movingAnimationDuration: widget.movingAnimationDuration,
             tooltipBorderRadius: widget.tooltipBorderRadius,
             scaleAnimationDuration: widget.scaleAnimationDuration,
@@ -809,54 +626,10 @@ class _ShowcaseState extends State<Showcase> {
             titleTextDirection: widget.titleTextDirection,
             descriptionTextDirection: widget.descriptionTextDirection,
             toolTipSlideEndDistance: widget.toolTipSlideEndDistance,
-            toolTipMargin: widget.toolTipMargin,
-            tooltipActionConfig: _getTooltipActionConfig(),
-            tooltipActions: _getTooltipActions(),
           ),
         ],
       ],
     );
-  }
-
-  List<Widget> _getTooltipActions() {
-    final actionData = (widget.tooltipActions?.isNotEmpty ?? false)
-        ? widget.tooltipActions!
-        : showCaseWidgetState.globalTooltipActions ?? [];
-
-    final actionWidgets = <Widget>[];
-    for (final action in actionData) {
-      /// This checks that if current widget is being showcased and there is
-      /// no local action has been provided and global action are needed to hide
-      /// then it will hide that action for current widget
-      if (_showShowCase &&
-          action.hideActionWidgetForShowcase.contains(widget.key) &&
-          (widget.tooltipActions?.isEmpty ?? true)) {
-        continue;
-      }
-      actionWidgets.add(
-        Padding(
-          padding: EdgeInsetsDirectional.only(
-            end: action != actionData.last
-                ? _getTooltipActionConfig().actionGap
-                : 0,
-          ),
-          child: TooltipActionButtonWidget(
-            config: action,
-            // We have to pass showcaseState from here because
-            // [TooltipActionButtonWidget] is not direct child of showcaseWidget
-            // so it won't be able to get the state by using it's context
-            showCaseState: showCaseWidgetState,
-          ),
-        ),
-      );
-    }
-    return actionWidgets;
-  }
-
-  TooltipActionConfig _getTooltipActionConfig() {
-    return widget.tooltipActionConfig ??
-        showCaseWidgetState.globalTooltipActionConfig ??
-        const TooltipActionConfig();
   }
 }
 
@@ -907,9 +680,7 @@ class _TargetWidget extends StatelessWidget {
         width: size.width,
         margin: targetPadding,
         decoration: ShapeDecoration(
-          shape: radius != null
-              ? RoundedRectangleBorder(borderRadius: radius!)
-              : shapeBorder,
+          shape: radius != null ? RoundedRectangleBorder(borderRadius: radius!) : shapeBorder,
         ),
       ),
     );
