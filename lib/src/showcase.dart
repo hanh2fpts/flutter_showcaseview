@@ -457,6 +457,7 @@ class _ShowcaseState extends State<Showcase> {
                 right: 0,
                 top: 0,
                 child: Container(
+                  margin: widget.targetPadding,
                   decoration: BoxDecoration(
                     //color: const Color(0xFFFAFAFA),
                     color: Colors.green,
